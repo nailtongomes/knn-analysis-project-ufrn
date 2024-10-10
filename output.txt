@@ -1,0 +1,102 @@
+Dataset: Synthetic
+Melhor Modelo: Custom
+Melhor k: 4
+Melhor Percentual de Treinamento: 40%
+
+Desempenho Médio por Modelo (F1-Score):
+  Custom: 0.9554
+  Scikit-learn: 0.9523
+
+Desempenho Médio por k (F1-Score):
+  k=1: 0.9419
+  k=2: 0.9351
+  k=3: 0.9596
+  k=4: 0.9634
+  k=5: 0.9620
+  k=6: 0.9612
+  k=7: 0.9569
+  k=8: 0.9546
+  k=9: 0.9500
+
+Desempenho Médio por Percentual de Treinamento (F1-Score):
+  10%: 0.9460
+  20%: 0.9548
+  30%: 0.9560
+  40%: 0.9587
+--------------------------------------------------
+Dataset: Iris
+Melhor Modelo: Custom
+Melhor k: 1
+Melhor Percentual de Treinamento: 30%
+
+Desempenho Médio por Modelo (F1-Score):
+  Custom: 0.8737
+  Scikit-learn: 0.8690
+
+Desempenho Médio por k (F1-Score):
+  k=1: 0.9425
+  k=2: 0.9377
+  k=3: 0.9357
+  k=4: 0.9383
+  k=5: 0.8261
+  k=6: 0.8303
+  k=7: 0.8274
+  k=8: 0.8145
+  k=9: 0.7897
+
+Desempenho Médio por Percentual de Treinamento (F1-Score):
+  10%: 0.6642
+  20%: 0.9386
+  30%: 0.9422
+  40%: 0.9404
+--------------------------------------------------
+Dataset: Wine
+Melhor Modelo: Custom
+Melhor k: 3
+Melhor Percentual de Treinamento: 20%
+
+Desempenho Médio por Modelo (F1-Score):
+  Custom: 0.8786
+  Scikit-learn: 0.8651
+
+Desempenho Médio por k (F1-Score):
+  k=1: 0.9036
+  k=2: 0.9014
+  k=3: 0.9187
+  k=4: 0.9130
+  k=5: 0.9115
+  k=6: 0.9116
+  k=7: 0.8388
+  k=8: 0.7926
+  k=9: 0.7557
+
+Desempenho Médio por Percentual de Treinamento (F1-Score):
+  10%: 0.6993
+  20%: 0.9383
+  30%: 0.9233
+  40%: 0.9266
+--------------------------------------------------
+No conjunto de dados 'Synthetic', o modelo com melhor desempenho médio é: Custom
+No conjunto de dados 'Iris', o modelo com melhor desempenho médio é: Custom
+No conjunto de dados 'Wine', o modelo com melhor desempenho médio é: Custom
+Desempenho Médio Geral dos Modelos:
+Model
+Custom          0.902601
+Scikit-learn    0.895463
+Name: F1-Score, dtype: float64
+
+O modelo com melhor desempenho médio geral é: Custom
+Para o conjunto de dados 'Synthetic', o melhor desempenho médio foi alcançado com k=4.
+Para o conjunto de dados 'Iris', o melhor desempenho médio foi alcançado com k=1.
+Para o conjunto de dados 'Wine', o melhor desempenho médio foi alcançado com k=3.
+Desempenho Médio por Percentual de Treinamento:
+Train Size
+0.1    0.769849
+0.2    0.943873
+0.3    0.940500
+0.4    0.941906
+Name: F1-Score, dtype: float64
+
+O melhor desempenho médio foi obtido com 20% de dados de treinamento.
+Correlação entre k e F1-Score: -0.2370
+Correlação entre Percentual de Treinamento e F1-Score: 0.4116
