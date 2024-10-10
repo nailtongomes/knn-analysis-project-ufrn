@@ -1,4 +1,6 @@
 # pip install -r requirements.txt
+# Autor: Nailton Gomes Silva - @nailtongs
+
 import io
 import sys
 
@@ -165,20 +167,87 @@ def get_results():
 
 
 def plot_results(results, dataset_name):
-
     df = pd.DataFrame(results)
     df = df[df['Dataset'] == dataset_name]
+    metrics = ['Accuracy', 'Precision', 'Recall', 'F1-Score']
     for train_size in df['Train Size'].unique():
-        plt.figure(figsize=(10, 6))
-        sns.lineplot(data=df[df['Train Size'] == train_size], x='k', y='F1-Score', hue='Model', marker='o')
-        plt.title(f'{dataset_name} Dataset - Train Size: {int(train_size*100)}%')
-        plt.xlabel('Número de Vizinhos (k)')
-        plt.ylabel('F1-Score')
-        plt.legend(title='Modelo')
-        # plt.show()
+        fig, axs = plt.subplots(2, 2, figsize=(12, 10))
+        for ax, metric in zip(axs.flatten(), metrics):
+            sns.lineplot(data=df[df['Train Size'] == train_size], x='k', y=metric, hue='Model', marker='o', ax=ax)
+            ax.set_title(f'{metric} vs k')
+            ax.set_xlabel('Número de Vizinhos (k)')
+            ax.set_ylabel(metric)
+            ax.legend(title='Modelo')
+        fig.suptitle(f'{dataset_name} Dataset - Tamanho de Treino: {int(train_size*100)}%')
+        plt.tight_layout(rect=(0, 0.03, 1, 0.95))
+        plt.savefig(f'./images/{dataset_name}_train_size_{int(train_size*100)}_metrics.png')
 
-        # save figure
-        plt.savefig(f'./images/{dataset_name}_train_size_{int(train_size*100)}.png')
+
+# Métricas vs Tamanho de Treinamento para o melhor k:
+def plot_metrics_vs_train_size_best_k(results, dataset_name, best_k):
+    df = pd.DataFrame(results)
+    df = df[(df['Dataset'] == dataset_name) & (df['k'] == best_k)]
+    metrics = ['Accuracy', 'Precision', 'Recall', 'F1-Score']
+    fig, axs = plt.subplots(2, 2, figsize=(12, 10))
+    for ax, metric in zip(axs.flatten(), metrics):
+        sns.lineplot(data=df, x='Train Size', y=metric, hue='Model', marker='o', ax=ax)
+        ax.set_title(f'{metric} vs Tamanho de Treino (k={best_k})')
+        ax.set_xlabel('Tamanho de Treino')
+        ax.set_ylabel(metric)
+        ax.legend(title='Modelo')
+    fig.suptitle(f'{dataset_name} Dataset - k = {best_k}')
+    plt.tight_layout(rect=(0, 0.03, 1, 0.95))
+    plt.savefig(f'./images/{dataset_name}_k_{best_k}_metrics_vs_train_size.png')
+
+
+# Plotagem das Matrizes de Confusão para o melhor desempenho:
+def plot_confusion_matrices(results, dataset_name):
+    df = pd.DataFrame(results)
+    df = df[df['Dataset'] == dataset_name]
+    models = df['Model'].unique()
+    for model in models:
+        df_model = df[df['Model'] == model]
+        best_row = df_model.loc[df_model['F1-Score'].idxmax()]
+        cm = best_row['Confusion Matrix']
+        k = best_row['k']
+        train_size = best_row['Train Size']
+        plt.figure(figsize=(6, 5))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+        plt.title(f'Matriz de Confusão - {dataset_name} - {model}\nk={k}, Tamanho de Treino={int(train_size*100)}%')
+        plt.ylabel('Rótulo Verdadeiro')
+        plt.xlabel('Rótulo Predito')
+        plt.tight_layout()
+        plt.savefig(f'./images/{dataset_name}_{model}_best_confusion_matrix.png')
+
+
+# Plotagem de Heatmap do F1-Score em função de k e Tamanho de Treino
+def plot_heatmap_f1_score(results, dataset_name):
+    df = pd.DataFrame(results)
+    df = df[df['Dataset'] == dataset_name]
+    models = df['Model'].unique()
+    for model in models:
+        df_model = df[df['Model'] == model]
+        pivot_table = df_model.pivot_table(values='F1-Score', index='Train Size', columns='k')
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(pivot_table, annot=True, fmt='.3f', cmap='viridis')
+        plt.title(f'Heatmap F1-Score - {dataset_name} - {model}')
+        plt.xlabel('k')
+        plt.ylabel('Tamanho de Treino')
+        plt.tight_layout()
+        plt.savefig(f'./images/{dataset_name}_{model}_f1_score_heatmap.png')
+
+
+def plot_overall_model_performance(results):
+    df = pd.DataFrame(results)
+    avg_f1_scores = df.groupby(['Dataset', 'Model'])['F1-Score'].mean().reset_index()
+    plt.figure(figsize=(10, 6))
+    sns.barplot(data=avg_f1_scores, x='Dataset', y='F1-Score', hue='Model')
+    plt.title('F1-Score Médio por Modelo nos Conjuntos de Dados')
+    plt.xlabel('Conjunto de Dados')
+    plt.ylabel('F1-Score Médio')
+    plt.legend(title='Modelo')
+    plt.tight_layout()
+    plt.savefig('./images/overall_model_performance.png')
 
 
 def analyze_results(results):
@@ -292,6 +361,16 @@ def run():
     plot_results(results_iris, 'Iris')
     plot_results(results_wine, 'Wine')
 
+    plot_confusion_matrices(results_synthetic, 'Synthetic')
+    plot_confusion_matrices(results_iris, 'Iris')
+    plot_confusion_matrices(results_wine, 'Wine')
+
+    plot_heatmap_f1_score(results_synthetic, 'Synthetic')
+    plot_heatmap_f1_score(results_iris, 'Iris')
+    plot_heatmap_f1_score(results_wine, 'Wine')
+
+    plot_overall_model_performance(results_synthetic + results_iris + results_wine)
+
     # Unificando todos os resultados
     all_results = results_synthetic + results_iris + results_wine
 
@@ -320,6 +399,10 @@ def run():
     best_k_values = best_k_per_dataset(results_synthetic + results_iris + results_wine)
     best_train_size = analyze_training_percentage(results_synthetic + results_iris + results_wine)
     correlation_k, correlation_train_size = analyze_correlation(results_synthetic + results_iris + results_wine)
+
+    # Plotagem das métricas vs Tamanho de Treino para o melhor k
+    for dataset in ['Synthetic', 'Iris', 'Wine']:
+        plot_metrics_vs_train_size_best_k(all_results, dataset, best_k_values[dataset])
 
     final_results = {
         'best_models': best_models,

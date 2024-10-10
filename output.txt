@@ -1,28 +1,28 @@
 Dataset: Synthetic
 Melhor Modelo: Custom
-Melhor k: 4
+Melhor k: 3
 Melhor Percentual de Treinamento: 40%
 
 Desempenho Médio por Modelo (F1-Score):
-  Custom: 0.9554
-  Scikit-learn: 0.9523
+  Custom: 0.9629
+  Scikit-learn: 0.9607
 
 Desempenho Médio por k (F1-Score):
-  k=1: 0.9419
-  k=2: 0.9351
-  k=3: 0.9596
-  k=4: 0.9634
-  k=5: 0.9620
-  k=6: 0.9612
-  k=7: 0.9569
-  k=8: 0.9546
-  k=9: 0.9500
+  k=1: 0.9622
+  k=2: 0.9594
+  k=3: 0.9665
+  k=4: 0.9637
+  k=5: 0.9618
+  k=6: 0.9610
+  k=7: 0.9625
+  k=8: 0.9606
+  k=9: 0.9586
 
 Desempenho Médio por Percentual de Treinamento (F1-Score):
-  10%: 0.9460
-  20%: 0.9548
-  30%: 0.9560
-  40%: 0.9587
+  10%: 0.9534
+  20%: 0.9605
+  30%: 0.9645
+  40%: 0.9689
 --------------------------------------------------
 Dataset: Iris
 Melhor Modelo: Custom
@@ -81,22 +81,22 @@ No conjunto de dados 'Iris', o modelo com melhor desempenho médio é: Custom
 No conjunto de dados 'Wine', o modelo com melhor desempenho médio é: Custom
 Desempenho Médio Geral dos Modelos:
 Model
-Custom          0.902601
-Scikit-learn    0.895463
+Custom          0.905082
+Scikit-learn    0.898281
 Name: F1-Score, dtype: float64
 
 O modelo com melhor desempenho médio geral é: Custom
-Para o conjunto de dados 'Synthetic', o melhor desempenho médio foi alcançado com k=4.
+Para o conjunto de dados 'Synthetic', o melhor desempenho médio foi alcançado com k=3.
 Para o conjunto de dados 'Iris', o melhor desempenho médio foi alcançado com k=1.
 Para o conjunto de dados 'Wine', o melhor desempenho médio foi alcançado com k=3.
 Desempenho Médio por Percentual de Treinamento:
 Train Size
-0.1    0.769849
-0.2    0.943873
-0.3    0.940500
-0.4    0.941906
+0.1    0.772297
+0.2    0.945788
+0.3    0.943344
+0.4    0.945297
 Name: F1-Score, dtype: float64
 
 O melhor desempenho médio foi obtido com 20% de dados de treinamento.
-Correlação entre k e F1-Score: -0.2370
-Correlação entre Percentual de Treinamento e F1-Score: 0.4116
+Correlação entre k e F1-Score: -0.2461
+Correlação entre Percentual de Treinamento e F1-Score: 0.4118
